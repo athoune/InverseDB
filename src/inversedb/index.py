@@ -30,9 +30,11 @@ class MemoryIndex(Index):
             if hasattr(value, '__call__'):
                 for k in self.values[column].keys():
                     if value(k):
-                        for d in self.values[column][k]:
-                            print d
-                            yield self.__getitem__(d)
+                        return self.values[column][k]
             elif self.values[column].has_key(value):
-                for i in self.values[column][value]:
-                    yield self.__getitem__(i)
+                return self.values[column][value]
+        return intbitset()
+
+    def fetch(self, keys):
+        for key in keys:
+            yield self.__getitem__(key)

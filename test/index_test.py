@@ -19,16 +19,20 @@ class TestIndex(unittest.TestCase):
     def setUp(self):
         self.andre = DummyDocument(42, True, 'Paris')
         self.benedicte = DummyDocument(37, False, 'Paris')
+        self.casimir = DummyDocument(74, True, 'Paris')
 
     def test_memory(self):
         idx = MemoryIndex()
         idx.add(self.andre)
         idx.add(self.benedicte)
+        idx.add(self.casimir)
         self.assertEqual(0, len(list(idx.find('location', 'Strasbourg'))))
-        self.assertEqual(2, len(list(idx.find('location', 'Paris'))))
+        self.assertEqual(3, len(list(idx.find('location', 'Paris'))))
         def more_than(x):
             return x > 37
-        self.assertEqual(42, list(idx.find('age', more_than))[0].age)
+        self.assertEqual(42, list(idx.fetch(idx.find('age', more_than)))[0].age)
+        males_in_Paris = list(idx.fetch(idx.find('sexe', True) & idx.find('location', 'Paris')))
+        self.assertEqual(2, len(males_in_Paris))
 
 if __name__ == '__main__':
     unittest.main()
