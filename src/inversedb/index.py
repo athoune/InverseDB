@@ -1,3 +1,5 @@
+from intbitset import intbitset
+
 class Index(object):
     def add(self, document):
         pass
@@ -15,8 +17,8 @@ class MemoryIndex(Index):
             if not self.values.has_key(k):
                 self.values[k] = {}
             if not self.values[k].has_key(v):
-                self.values[k][v] = []
-            self.values[k][v].append(self.idx)
+                self.values[k][v] = intbitset()
+            self.values[k][v].add(self.idx)
         self.idx += 1
         return document
 
