@@ -11,6 +11,9 @@ class DummyDocument(Document):
         self.sexe = sexe
         self.location = location
 
+    def __repr__(self):
+        return "<Doc %i %s %s>" % (self.age, self.sexe, self.location)
+
 class TestIndex(unittest.TestCase):
 
     def setUp(self):
@@ -21,7 +24,7 @@ class TestIndex(unittest.TestCase):
         idx = MemoryIndex()
         idx.add(self.andre)
         idx.add(self.benedicte)
-        print idx.values
+        print idx.find('location', 'Paris')
 
 if __name__ == '__main__':
     unittest.main()
