@@ -24,7 +24,11 @@ class TestIndex(unittest.TestCase):
         idx = MemoryIndex()
         idx.add(self.andre)
         idx.add(self.benedicte)
-        print idx.find('location', 'Paris')
+        self.assertEqual([], list(idx.find('location', 'Strasbourg')))
+        self.assertEqual(2, len(list(idx.find('location', 'Paris'))))
+        def more_than(x):
+            return x > 37
+        self.assertEqual(42, list(idx.find('age', more_than))[0].age)
 
 if __name__ == '__main__':
     unittest.main()

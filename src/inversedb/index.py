@@ -24,8 +24,13 @@ class MemoryIndex(Index):
         return self.store[key]
 
     def find(self, column, value):
-        if not self.values.has_key(column):
-            return None
-        if not self.values[column].has_key(value):
-            return None
-        return [self.__getitem__(i) for i in self.values[column][value]]
+        if self.values.has_key(column):
+            if hasattr(value, '__call__'):
+                for k in self.values[column].keys():
+                    if value(k):
+                        for d in self.values[column][k]:
+                            print d
+                            yield self.__getitem__(d)
+            elif self.values[column].has_key(value):
+                for i in self.values[column][value]:
+                    yield self.__getitem__(i)
