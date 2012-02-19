@@ -49,12 +49,16 @@ class Index(object):
         document['_id'] = self.nextId() #FIXME if _id doesn't already exist
         self.store[self.serialize(document['_id'])] = self.serialize_document(document)
         for column in document:
-            value = self.serialize(document[column])
-            if not self.values.has_key(column):
-                self.values[column] = self.new_db(column)
-            if not self.values[column].has_key(value):
-                self.values[column][value] = intbitset()
-            self.values[column][value].add(document['_id'])
+            values = document[column]
+            if type(values) is not list:
+                values = [values]
+            for value in values:
+                value = self.serialize(value)
+                if not self.values.has_key(column):
+                    self.values[column] = self.new_db(column)
+                if not self.values[column].has_key(value):
+                    self.values[column][value] = intbitset()
+                self.values[column][value].add(document['_id'])
         return document
 
     def merge(self, index):
