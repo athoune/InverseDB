@@ -36,6 +36,18 @@ def more_than(x):
 idx.find('age', more_than)
 ```
 
+Technical implementation
+------------------------
+
+InverseDb is a pedagogical projet.
+It try to show how inversed index works and RDBMS are not "one size fits all" tools.
+Inversedb use the same inversed pattern of [Lucene](http://lucene.apache.org/core/).
+
+Persistance is done with simple key-value storage.
+For now, ram and gdbm storage are provided, and soon [KyotoCabinet](http://fallabs.com/kyotocabinet/) and [LevelDB](http://code.google.com/p/leveldb/).
+
+InverseDb actions are easy to parralelized, and will fit well with multicore and multiserver architecture.
+
 Licence
 -------
 
