@@ -22,6 +22,13 @@ class TestIndex(TestInverse):
         older = query.more_than('age', 37)(self.idx)
         self.assertEqual(intbitset([1, 3]), older)
 
+    def test_parsing(self):
+        q = query.query(self.idx, {
+            'and': [
+                {'equal': ['location', 'Paris']},
+                {'more_than': ['age', 37]}
+            ]})
+        self.assertEqual(intbitset([1, 3]), q)
+
 if __name__ == '__main__':
     unittest.main()
-
