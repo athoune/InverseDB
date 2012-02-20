@@ -1,5 +1,7 @@
-from utils import TestInverse
 import unittest
+from intbitset import intbitset
+from utils import TestInverse
+import inversedb.query as query
 
 class TestIndex(TestInverse):
 
@@ -14,5 +16,12 @@ class TestIndex(TestInverse):
         beer_drinker = self.idx.find('fanof', 'beer')
         self.assertEqual(2, len(list(beer_drinker)))
 
+    def test_query(self):
+        parisians = query.equal('location', 'Paris')(self.idx)
+        self.assertEqual(intbitset([1,2,3]), parisians)
+        older = query.more_than('age', 37)(self.idx)
+        self.assertEqual(intbitset([1, 3]), older)
+
 if __name__ == '__main__':
     unittest.main()
+
