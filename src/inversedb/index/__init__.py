@@ -3,7 +3,7 @@ from intbitset import intbitset
 class Index(object):
 
     def __init__(self):
-        self.store = self.new_db('store')
+        self.columns = {}
         self.idx = 0
         self.values = {}
 
@@ -16,7 +16,7 @@ class Index(object):
         return self.idx
 
     def __getitem__(self, key):
-        return self.unserialize_document(self.store[self.serialize(key)])
+        return self.unserialize_document(self.columns[self.serialize(key)])
 
     def find(self, column, value):
         if self.values.has_key(column):
@@ -32,9 +32,9 @@ class Index(object):
                     return self.values[column][value]
         return intbitset()
 
-    def fetch(self, keys):
+    def fetch(self, column, keys):
         for key in keys:
-            yield self.__getitem__(key)
+            yield self.unserialize_document(self.columns[column][self.serialize(key)])
 
     def serialize(self, value):
         return str(value)
@@ -47,15 +47,18 @@ class Index(object):
 
     def add(self, document):
         document['_id'] = self.nextId() #FIXME if _id doesn't already exist
-        self.store[self.serialize(document['_id'])] = self.serialize_document(document)
         for column in document:
             values = document[column]
+            if column not in self.columns:
+                self.columns[column] = self.new_db("column:%s" % column)
+            self.columns[column][self.serialize(document['_id'])] = self.serialize_document(values)
+            #Inverse
             if type(values) is not list:
                 values = [values]
             for value in values:
                 value = self.serialize(value)
                 if not self.values.has_key(column):
-                    self.values[column] = self.new_db(column)
+                    self.values[column] = self.new_db("value:%s" % column)
                 if not self.values[column].has_key(value):
                     self.values[column][value] = intbitset()
                 self.values[column][value].add(document['_id'])
