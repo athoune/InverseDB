@@ -36,6 +36,7 @@ class Index(object):
         for key in keys:
             yield self.unserialize_document(self.columns[column][self.serialize(key)])
 
+
     def serialize(self, value):
         return str(value)
 

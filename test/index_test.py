@@ -30,5 +30,16 @@ class TestIndex(TestInverse):
             ]})
         self.assertEqual(intbitset([1, 3]), q)
 
+    def test_sum(self):
+        q = query.query(self.idx, {
+                'equal': ['sexe', True]
+            })
+        q = query.query(self.idx, {
+            'sum':['age', {
+                'equal': ['sexe', True]
+                }]
+            })
+        self.assertEqual(42 + 74, q)
+
 if __name__ == '__main__':
     unittest.main()
