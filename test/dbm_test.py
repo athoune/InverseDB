@@ -4,7 +4,7 @@ from inversedb.index.dbm import DbmIndex
 
 class TestDbmIndex(TestInverse):
 
-    def test_merge(self):
+    def _test_merge(self):
         k = DbmIndex('/tmp/')
         k.merge(self.idx)
 

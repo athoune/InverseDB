@@ -12,7 +12,7 @@ class TestInverse(unittest.TestCase):
         self.benedicte = {'age': 37, 'sexe': False, 'location': 'Paris', 'fanof': ['beer', 'football']}
         self.casimir = {'age': 74, 'sexe': True, 'location': 'Paris'}
         self.idx = MemoryIndex()
-        self.idx.add(self.andre)
-        self.idx.add(self.benedicte)
-        self.idx.add(self.casimir)
+        self.idx.add_document(self.andre)
+        self.idx.add_document(self.benedicte)
+        self.idx.add_document(self.casimir)
 
