@@ -1,16 +1,21 @@
+from inversedb.column import Column
+
 class Storage(object):
 
-    def __init__(self, name):
+    def __init__(self, name, column = None):
         self.columns = {}
         self.name = name
+        if column == None:
+            column = Column()
+        self.column = column
 
     def set(self, column, key, value):
         if column not in self.columns:
             self.columns[column] = self.new_db(column)
-        self.columns[column][str(key)] = value
+        self.columns[column][str(key)] = self.column.dehydrate(value)
 
     def get(self, column, key):
-        return self.columns[column][str(key)]
+        return self.column.hydrate(self.columns[column][str(key)])
 
     def has_column(self, column):
         return self.columns.has_key(column)
